@@ -50,3 +50,7 @@ Example with `version`=`3.7`
 docker build --build-arg version=3.7 -t aif360-python37 .
 docker run aif360-python37
 ```
+
+### Tested
+- `version`=`3.7`
+- `version`=`3.8`
