@@ -1,31 +1,3 @@
-# aif360-test-dependencies
-
-Test update python packages to aif360-r
-
-## Dockerfile
-
-```
-ARG version
-FROM python:$version
-RUN apt-get update && apt-get install -y \
-    r-base \
-    r-base-dev
-RUN R -e "install.packages(c('reticulate', 'remotes'), repos='http://cran.rstudio.com/')"
-RUN R -e "remotes::install_github('th1460/AIF360/aif360/aif360-r')"
-
-COPY python_config.sh .
-RUN chmod +x python_config.sh
-RUN ./python_config.sh
-
-COPY check.R .
-RUN chmod +x check.R
-
-CMD ["./check.R"]
-```
-
-## Check the function `install_aif360`:
-
-```
 #!/usr/bin/env Rscript
 
 # install python packages
@@ -47,16 +19,3 @@ formatted_dataset <- aif360::aif_dataset(data_path = data,
                                          target_column = "label",
                                          protected_attribute = "feature1")
 print(formatted_dataset)
-```
-
-## Build and Run image with Python `version` to test:
-
-Example with `version`=`3.7`
-```
-docker build --build-arg version=3.7 -t aif360-check .
-docker run aif360-check
-```
-
-### Tested
-- `version`=`3.7`
-- `version`=`3.8`
